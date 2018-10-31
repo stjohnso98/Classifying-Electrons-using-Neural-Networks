@@ -27,8 +27,9 @@ We will show 2 different ways to build that dataset:
     ```
 Below, there are some parameters that you need to change (Marked 'CHANGE HERE'), 
 such as the dataset path.
-
-After creating image dataset seperately for training and testing, training and testing is done for the respective dataset and total accuracy of the model is printed
+After creating image dataset seperately for training and testing, training and testing is done for the respective dataset and total accuracy of the model is printed.
+Output and ROC curves are plotted using matplotlib.
+Output equals probability of image being the signal
 Author: Steenu Johnson
 Project: https://github.com/stjohnso98/Tensorflow
 """
@@ -36,6 +37,15 @@ from __future__ import print_function
 
 import tensorflow as tf
 import os
+from tensorflow.python.framework import ops
+from tensorflow.python.framework import dtypes
+import random
+import skflow
+import numpy as np
+from scipy import interp
+import matplotlib.pyplot as plt
+import plotly.plotly as py
+from sklearn.metrics import roc_curve, auc, confusion_matrix
 
 # Dataset Parameters - CHANGE HERE
 MODE = 'folder' # or 'file', if you choose a plain text file (see above).
@@ -130,7 +140,7 @@ dropout = 0.75 # Dropout, probability to keep units
 
 # Build the data input
 X_train, Y_train = read_images(TRAIN_DATASET_PATH, MODE, batch_size)
-X_train_test, Y_train_test = read_images(TRAIN_DATASET_PATH, MODE, batch_size_test) # A copy of training data for testing once the training is complete
+X_train_test, Y_train_test = read_images(TRAIN_DATASET_PATH, MODE, batch_size_test)
 X_test, Y_test = read_images(TEST_DATASET_PATH, MODE, batch_size_test)
 
 # Create model
@@ -185,9 +195,11 @@ train_op = optimizer.minimize(loss_op)
 correct_pred = tf.equal(tf.argmax(logits_test, 1), tf.cast(Y_train, tf.int64))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 correct_pred_train = tf.equal(tf.argmax(logits_train_test, 1), tf.cast(Y_train_test, tf.int64),name="correct_pred_train")
+true_train, score_train, abs_score_train = tf.cast(Y_train_test, tf.int64), tf.cast(logits_train_test[:,1],tf.float32), tf.argmax(logits_train_test,1)
 accuracy_train = tf.reduce_mean(tf.cast(correct_pred_train, tf.float32),name="train_accuracy")
 
 correct_pred_test = tf.equal(tf.argmax(logits_test_test, 1), tf.cast(Y_test, tf.int64),name="correct_pred_test")
+true_test, score_test, abs_score_test = tf.cast(Y_test, tf.int64), tf.cast(logits_test_test[:,1],tf.float32), tf.argmax(logits_test_test,1)
 accuracy_test = tf.reduce_mean(tf.cast(correct_pred_test, tf.float32),name="test_accuracy")
 
 # Initialize the variables (i.e. assign their default value)
@@ -197,7 +209,43 @@ init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 sum_test = 0
 sum_train = 0
+
+def pred(y_true,y_score,isSignal):
+    pred=list()
+    if isSignal:
+        for i in range(0,len(y_true)):
+            if y_true[i]==1:
+                pred.append(y_score[i])
+    if not isSignal:
+        for i in range(0,len(y_true)):
+            if y_true[i]==0:
+                pred.append(y_score[i])
+    return pred
 # Start training
+
+def roc(y_true,y_score):
+    thresholds = np.linspace(0,1,101)
+    ROC = np.zeros((101,2))
+    l=len(y_true)
+    Y1 = np.zeros(l,dtype=bool)
+    Y2 = np.zeros(l,dtype=bool)
+    for i in range(0,l):
+        Y1[i] = y_true[i] == 1
+        Y2[i] = y_true[i] == 0
+    for i in range(101):
+        t = thresholds[i]
+        TP_t = np.logical_and( y_score > t, Y1 ).sum()
+        TN_t = np.logical_and( y_score <=t, Y2 ).sum()
+        FP_t = np.logical_and( y_score > t, Y2 ).sum()
+        FN_t = np.logical_and( y_score <=t, Y1 ).sum()
+        FPR_t = float(FP_t) / float(FP_t + TN_t)
+        ROC[i,0] = FPR_t
+        TPR_t = float(TP_t) / float(TP_t + FN_t)
+        ROC[i,1] = TPR_t
+        if t>0.49 and t<0.51:
+            print("t = "+"{:.4f}".format(t)+", True positive rate = "+"{:.4f}".format(TPR_t)+", True Negetive Rate =  "+"{:.4f}".format(1-FPR_t))
+    return ROC[:,0],ROC[:,1]
+
 with tf.Session() as sess:
 
     # Run the initializer
@@ -222,18 +270,71 @@ with tf.Session() as sess:
             sess.run(train_op)
 
     print("Optimization Finished!")
+    y_true_train, y_score_train, y_abs_score_train, y_true_test, y_score_test, y_abs_score_test = list(),list(),list(),list(),list(),list()
     for step in range(1, num_steps_test+1):
         train_acc = sess.run(accuracy_train)
         test_acc = sess.run(accuracy_test)
         sum_train = float(sum_train) + float(train_acc)
         sum_test = float(sum_test) + float(test_acc)
+        y_trueTrain,y_scoreTrain,y_abs_scoreTrain = sess.run([true_train,score_train,abs_score_train])
+        y_trueTest, y_scoreTest,y_abs_scoreTest = sess.run([true_test,score_test,abs_score_test])
+        y_true_train.extend(y_trueTrain)
+        y_score_train.extend(y_scoreTrain)
+        y_abs_score_train.extend(y_abs_scoreTrain)
+        y_true_test.extend(y_trueTest)
+        y_score_test.extend(y_scoreTest)
+        y_abs_score_test.extend(y_abs_scoreTest)
         print("Step " + str(step) + ", Training Accuracy= " + \
                   "{:.4f}".format(train_acc) + ", Testing Accuracy= "+"{:.4f}".format(test_acc))
     average_train=float(sum_train/num_steps_test)
     average_test=float(sum_test/num_steps_test)
     print("Training Accuracy = "+ "{:.4f}".format(average_train) + ", Testing Accuracy = " + "{:.4f}".format(average_test))
+    # Save your model
+    #saver.save(sess, 'my_tf_model')
+    sig_pred_test=pred(y_true_test,y_score_test,isSignal=True)
+    bg_pred_test=pred(y_true_test,y_score_test,isSignal=False)
+    sig_pred_train=pred(y_true_train,y_score_train,isSignal=True)
+    bg_pred_train=pred(y_true_train,y_score_train,isSignal=False)
+    #FPR, TPR, _ = roc_curve(y_true_test,y_abs_score_test,pos_label=1)
+    FPR,TPR = roc(y_true_test,y_score_test)
+    TNR = 1-FPR
+    FNR = 1-TPR
+    tn,fp,fn,tp = confusion_matrix(y_true_test,y_abs_score_test).ravel()
+    AUC = auc(FPR, TPR)
+    plt.figure(1)
+    plt.plot(FPR, TPR, label='ROC curve (area = %0.2f)' % AUC)
+    plt.plot([0, 1], [0, 1], 'r--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.02])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curve')
+    plt.legend(loc="lower right")
+    plt.figure(2)
+    bins = np.linspace(0, 1, 50)
+    counts_sig,bin_edges_sig=np.histogram(sig_pred_train,50)
+    bin_centres_sig = (bin_edges_sig[:-1]+bin_edges_sig[1:])/2
+    menStd_sig = np.sqrt(counts_sig)
+    width = 0.01
+    plt.errorbar(bin_centres_sig,counts_sig,yerr=menStd_sig,fmt='o',label='Signal(Training Set)')
+    counts_bg,bin_edges_bg=np.histogram(bg_pred_train,50)
+    bin_centres_bg = (bin_edges_bg[:-1]+bin_edges_bg[1:])/2
+    menStd_bg = np.sqrt(counts_bg)
+    plt.errorbar(bin_centres_bg,counts_bg,yerr=menStd_bg,fmt='o',label = 'Background(Training Set)')
+    plt.hist(sig_pred_test,label='Signal(Testing set)',bins=bins,histtype='step',color='blue')
+    plt.hist(bg_pred_test,label='Background(Testing set)',bins=bins,histtype='step',color='red')
+    #plt.hist(sig_pred_train,label='Signal Train',bins=bins,histtype='step',density=True)
+    #plt.hist(bg_pred_train,label='Background Train',bins=bins,histtype='step',density=True)
+    plt.legend(loc="best")
+    plt.xlabel('Output',fontsize=18)
+    plt.ylabel('Entries',fontsize=18)
+    plt.figure(3)
+    plt.plot(TPR,TNR, label = 'ROC curve')
+    plt.xlabel('Signal Efficiency')
+    plt.ylabel('Background Rejection')
+    plt.show()
     saver.save(sess, '/home/dell/my_tf_model')
     coord.request_stop()
     coord.join(threads)
-    # Save your model
-    #saver.save(sess, 'my_tf_model')
+    #file_to_write.close()
+    #writer.close()
