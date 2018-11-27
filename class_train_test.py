@@ -119,9 +119,9 @@ def read_images(dataset_path, mode, batch_size):
     return X, Y
 
 # -----------------------------------------------
-# THIS IS A CLASSIC CNN (see examples, section 3)
+# THIS IS A CLASSIC CNN 
 # -----------------------------------------------
-# Note that a few elements have changed (usage of queues).
+
 
 # Parameters
 learning_rate = 0.001
