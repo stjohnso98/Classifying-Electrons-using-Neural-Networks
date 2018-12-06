@@ -143,7 +143,22 @@ X_train_test, Y_train_test = read_images(TRAIN_DATASET_PATH, MODE, batch_size_te
 X_test, Y_test = read_images(TEST_DATASET_PATH, MODE, batch_size_test)
 
 # Create model
+def conv_net(x, n_classes, dropout, reuse, is_training):
+    # Define a scope for reusing the variables
+    with tf.variable_scope('ConvNet', reuse=reuse):
 
+        # Flatten the data to a 1-D vector for the fully connected layer
+        fc1 = tf.contrib.layers.flatten(x)
+        # Fully connected layer (in contrib folder for now)
+        fc1 = tf.layers.dense(fc1, 4096,activation=tf.nn.relu)
+        fc2 = tf.layers.dense(fc1, 4096,activation=tf.nn.relu)
+        fc3 = tf.layers.dense(fc2, 4096,activation=tf.nn.relu)
+        out = tf.layers.dense(fc3, n_classes)
+        # Because 'softmax_cross_entropy_with_logits' already apply softmax,
+        # we only apply softmax to testing network
+        out = tf.nn.softmax(out) if not is_training else out
+
+    return out
 
 
 # Because Dropout have different behavior at training and prediction time, we
