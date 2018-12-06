@@ -5,13 +5,13 @@ I will show 2 different ways to build that dataset:
 - From a root folder, that will have a sub-folder containing images for each class
     ```
     ROOT_FOLDER
-       |-------- SUBFOLDER (CLASS 0)
+       |-------- SUBFOLDER (CLASS 0 OR SIGNAL)
        |             |
        |             | ----- image1.jpg
        |             | ----- image2.jpg
        |             | ----- etc...
        |             
-       |-------- SUBFOLDER (CLASS 1)
+       |-------- SUBFOLDER (CLASS 1 OR BACKGROUND) 
        |             |
        |             | ----- image1.jpg
        |             | ----- image2.jpg
