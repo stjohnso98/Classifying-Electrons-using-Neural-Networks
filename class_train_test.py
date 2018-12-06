@@ -56,7 +56,7 @@ TEST_DATASET_PATH = '/home/dell/dataset/Medium_herwig/test_ele'
 N_CLASSES = 2 # CHANGE HERE, total number of classes
 IMG_HEIGHT = 64 # CHANGE HERE, the image height to be resized to
 IMG_WIDTH = 64 # CHANGE HERE, the image width to be resized to
-CHANNELS = 3 # The 3 color channels, change to 1 if grayscale
+CHANNELS = 1 # The 3 color channels, change to 1 if grayscale
 
 
 # Reading the dataset
