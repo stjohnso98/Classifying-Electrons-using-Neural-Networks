@@ -1,7 +1,7 @@
 
 """ Build an Image Dataset in TensorFlow.
 For this example, you need to make your own set of images (JPEG).
-We will show 2 different ways to build that dataset:
+I will show 2 different ways to build that dataset:
 - From a root folder, that will have a sub-folder containing images for each class
     ```
     ROOT_FOLDER
@@ -28,8 +28,8 @@ We will show 2 different ways to build that dataset:
 Below, there are some parameters that you need to change (Marked 'CHANGE HERE'), 
 such as the dataset path.
 After creating image dataset seperately for training and testing, training and testing is done for the respective dataset and total accuracy of the model is printed.
-Output and ROC curves are plotted using matplotlib.
-Output equals probability of image being the signal
+Output histogram and ROC curves are plotted using matplotlib.
+Output equals probability of image being the CLASS 0 image
 Author: Steenu Johnson
 Project: https://github.com/stjohnso98/Tensorflow
 """
@@ -49,8 +49,8 @@ from sklearn.metrics import roc_curve, auc, confusion_matrix
 
 # Dataset Parameters - CHANGE HERE
 MODE = 'folder' # or 'file', if you choose a plain text file (see above).
-TRAIN_DATASET_PATH = '/home/dell/dataset/Medium_herwig/train_ele' # the dataset file or root folder path.
-TEST_DATASET_PATH = '/home/dell/dataset/Medium_herwig/test_ele'
+TRAIN_DATASET_PATH = '/home/dell/dataset/Medium_herwig/train_ele' # the dataset file or root folder path of training set
+TEST_DATASET_PATH = '/home/dell/dataset/Medium_herwig/test_ele'   # the dataset file or root folder path of testing set
 
 # Image Parameters
 N_CLASSES = 2 # CHANGE HERE, total number of classes
@@ -180,10 +180,11 @@ def conv_net(x, n_classes, dropout, reuse, is_training):
 
 # Create a graph for training
 logits_train = conv_net(X_train, N_CLASSES, dropout, reuse=False, is_training=True)
-# Create another graph for testing that reuse the same weights
+# Create another graph for testing on the same batch that reuse the same weights
 logits_test = conv_net(X_train, N_CLASSES, dropout, reuse=True, is_training=False)
+# Create another graph for training data that reuse the same weights
 logits_train_test = conv_net(X_train_test,N_CLASSES, dropout, reuse=True, is_training=False)
-# Create another graph for testing that reuse the same weights
+# Create another graph for testing data that reuse the same weights
 logits_test_test = conv_net(X_test, N_CLASSES, dropout, reuse=True, is_training=False)
 # Define loss and optimizer (with train logits, for dropout to take effect)
 loss_op = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
@@ -195,6 +196,7 @@ train_op = optimizer.minimize(loss_op)
 correct_pred = tf.equal(tf.argmax(logits_test, 1), tf.cast(Y_train, tf.int64))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 correct_pred_train = tf.equal(tf.argmax(logits_train_test, 1), tf.cast(Y_train_test, tf.int64),name="correct_pred_train")
+# Get label, score of the image, and absolute score
 true_train, score_train, abs_score_train = tf.cast(Y_train_test, tf.int64), tf.cast(logits_train_test[:,1],tf.float32), tf.argmax(logits_train_test,1)
 accuracy_train = tf.reduce_mean(tf.cast(correct_pred_train, tf.float32),name="train_accuracy")
 
@@ -210,6 +212,7 @@ saver = tf.train.Saver()
 sum_test = 0
 sum_train = 0
 
+# Function to get scores of CLASS 0 and CLASS 1 images seperately.
 def pred(y_true,y_score,isSignal):
     pred=list()
     if isSignal:
@@ -221,8 +224,8 @@ def pred(y_true,y_score,isSignal):
             if y_true[i]==0:
                 pred.append(y_score[i])
     return pred
-# Start training
 
+# Function to calculate true positive and true negetive rate
 def roc(y_true,y_score):
     thresholds = np.linspace(0,1,101)
     ROC = np.zeros((101,2))
@@ -271,6 +274,7 @@ with tf.Session() as sess:
 
     print("Optimization Finished!")
     y_true_train, y_score_train, y_abs_score_train, y_true_test, y_score_test, y_abs_score_test = list(),list(),list(),list(),list(),list()
+    # Testing cycle(On both training and testing data)
     for step in range(1, num_steps_test+1):
         train_acc = sess.run(accuracy_train)
         test_acc = sess.run(accuracy_test)
@@ -291,6 +295,7 @@ with tf.Session() as sess:
     print("Training Accuracy = "+ "{:.4f}".format(average_train) + ", Testing Accuracy = " + "{:.4f}".format(average_test))
     # Save your model
     #saver.save(sess, 'my_tf_model')
+    # Getting the model predictions to plot the Output histogram and ROC curve
     sig_pred_test=pred(y_true_test,y_score_test,isSignal=True)
     bg_pred_test=pred(y_true_test,y_score_test,isSignal=False)
     sig_pred_train=pred(y_true_train,y_score_train,isSignal=True)
