@@ -47,6 +47,8 @@ import matplotlib.pyplot as plt
 import plotly.plotly as py
 from sklearn.metrics import roc_curve, auc, confusion_matrix
 
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
 # Dataset Parameters - CHANGE HERE
 MODE = 'folder' # or 'file', if you choose a plain text file (see above).
 TRAIN_DATASET_PATH = '/home/dell/dataset/Medium_herwig/train_ele' # the dataset file or root folder path of training set
@@ -249,7 +251,7 @@ def roc(y_true,y_score):
             print("t = "+"{:.4f}".format(t)+", True positive rate = "+"{:.4f}".format(TPR_t)+", True Negetive Rate =  "+"{:.4f}".format(1-FPR_t))
     return ROC[:,0],ROC[:,1]
 
-with tf.Session() as sess:
+with tf.Session(config=config) as sess:
 
     # Run the initializer
     sess.run(init)
