@@ -9,7 +9,9 @@ Compact Muon Solenoid or CMS is a general purpose detector designed to observe a
 ![cms-event](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/cmsreleasesn.gif)
 
 ## Particle Reconstruction
-The interaction of the particle with the different layers of the detector is used to reconstruct the nature and properties of the particle. The silicon tracker tracks particles near the collision region. Calorimeter stops some particles and measures their energy. The magnet bends the particle allowing for momentum measurement. Muon chambers detect muons.
+The interaction of the particle with the different layers of the detector is used to reconstruct the nature and properties of the particle. The silicon tracker tracks particles near the collision region. The calorimeter stops some particles and measures their energy. The magnet bends the particle allowing for momentum measurement. Muon chambers detect muons.
 
 ![cms-reconstruction](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/particle_reco.gif)
+
+This work uses convolutional neural networks to classify electrons using their signature in the calorimeters.
 
