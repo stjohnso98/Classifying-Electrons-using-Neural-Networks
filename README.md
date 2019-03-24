@@ -24,6 +24,6 @@ In the ideal case, isolated electrons is expected to have lesser amount of energ
 
 Below are some example images of isolated electrons.
 
-![1](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele1.jpg) | ![2](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele2.jpg)
+<img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele1.jpg" width="425"/> <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele2.jpg" width="425"/>
 
 
