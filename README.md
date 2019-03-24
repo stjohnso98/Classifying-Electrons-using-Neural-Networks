@@ -39,3 +39,5 @@ Below is the output histogram of a convolutional neural network after training a
 ![result](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/Figure_2-16.png)
 
 The CNN results was compared with the result of traditional physics observable, a parameter called "isolation", used by physicists to classify these electron. The ROC curve for both is shown below. The CNN outperformed the traditional physics observable for most signal efficiencies (Signal efficiency - True positive rate, Background rejection - True negative rate).
+
+![roc](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/Figure_2-12.png)
