@@ -16,9 +16,9 @@ The interaction of the particle with the different layers of the detector is use
 This work uses convolutional neural networks to classify electrons using their signature in the calorimeters. Data from CMS detector is used for this work.
 
 ## Electron Classification
-Electrons that are away from any hadronic activity (isolated) should be distinguished from those that are close to hadronic activity (non-isolated) . Better discrimination gives a better chance of observing new physics signals which mainly has isolated electrons in which case the non-isolated electrons forms the background. This work uses pattern of energy deposits in the calorimeters of the detector around the electron for classification. The pattern of energy deposits is treated as a two dimensional image where two dimensions are spatial coordinates of the detector and amount of energy deposited at different points of the calorimeter are the pixel intensities.
+Electrons that are away from any hadronic activity (isolated) should be distinguished from those that are close to hadronic activity (non-isolated) . Better discrimination gives a better chance of observing new physics signals which mainly has isolated electrons in which case the non-isolated electrons forms the background. This work uses pattern of energy deposits in the calorimeters of the detector around the electron for classification. The pattern of energy deposits is treated as a two dimensional image where two dimensions are spatial coordinates of the detector and pixel intensities are the amount of energy deposited at different points of the calorimeter.
 
 ![img-con](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/imgcon.png)
 
-In the ideal case, isolated electrons is expected to have lesser amount of energy deposits around them compared to non-isolated electrons. But factors like pile-up (collisions at same buch-crossing) and bremsstrahlung radiation emitted by electron, makes patterns of both eletrons indistinguishable for humans.
+In the ideal case, isolated electrons is expected to have lesser amount of energy deposits around them compared to non-isolated electrons. But factors like pile-up (collisions at the same bunch-crossing) and bremsstrahlung radiation emitted by electron, makes patterns of both eletrons indistinguishable for humans.
 
