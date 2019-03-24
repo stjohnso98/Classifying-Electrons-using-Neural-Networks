@@ -35,3 +35,6 @@ Below are some examples images of non-isolated electrons.
 Note: The color in this image is only for the purpose of representation. Actual images used for training and testing of neural networks was grayscale images.
 
 Below is the output histogram of a convolutional neural network after training and testing on 8000 electron images of both categories.
+
+![result](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/Figure_2-16.png)
+
