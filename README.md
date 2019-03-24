@@ -16,5 +16,5 @@ The interaction of the particle with the different layers of the detector is use
 This work uses convolutional neural networks to classify electrons using their signature in the calorimeters. Data from CMS detector is used for this work.
 
 ## Electron Classification
-Electrons that are away from any hadronic activity (isolated) should be distinguished from those that are close to hadronic activity (non-isolated) . Better discrimination gives a better chance of observing new physics signals which mainly has isolated electrons in which case the non-isolated electrons forms the background.
+Electrons that are away from any hadronic activity (isolated) should be distinguished from those that are close to hadronic activity (non-isolated) . Better discrimination gives a better chance of observing new physics signals which mainly has isolated electrons in which case the non-isolated electrons forms the background. This work uses pattern of energy deposits in the calorimeters of the detector around the electron for classification. In the ideal case, isolated electrons is expected to have lesser amount of energy deposits around them compared to non-isolated electrons. But factors like pile-up (collisions at same buch-crossing) and bremsstrahlung radiation emitted by electron, makes patterns of both eletrons indistinguishable for humans.
 
