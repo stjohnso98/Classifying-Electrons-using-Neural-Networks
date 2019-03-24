@@ -34,7 +34,8 @@ Below are some examples images of non-isolated electrons.
 
 Note: The color in this image is only for the purpose of representation. Actual images used for training and testing of neural networks was grayscale images.
 
-Below is the output histogram of a convolutional neural network after training and testing on 8000 electron images of both categories.
+Below is the output histogram of a convolutional neural network after training and testing on 8000 electron images of both categories. (Signal is isolated electrons and background is non-isolated electrons.)
 
 ![result](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/Figure_2-16.png)
 
+The CNN results was compared with the result of traditional physics observable, a parameter called "isolation", used by physicists to classify these electron. The ROC curve for both is shown below. The CNN outperformed the traditional physics observable for most signal efficiencies (Signal efficiency - True positive rate, Background rejection - True negative rate).
