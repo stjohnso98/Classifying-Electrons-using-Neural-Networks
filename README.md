@@ -27,5 +27,9 @@ Below are some example images of isolated electrons.
 <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele1.jpg" width="425"/> <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele2.jpg" width="425"/>
 <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele3.jpg" width="425"/> <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele4.jpg" width="425"/>
 
+Below are some examples images of non-isolated electrons.
+
+<img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/fake_ele1.jpg" width="425"/> <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/fake_ele2.jpg" width="425"/>
+<img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/fake_ele3.jpg" width="425"/> <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/fake_ele4.jpg" width="425"/>
 
 
