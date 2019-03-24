@@ -22,3 +22,8 @@ Electrons that are away from any hadronic activity (isolated) should be distingu
 
 In the ideal case, isolated electrons is expected to have lesser amount of energy deposits around them compared to non-isolated electrons. But factors like pile-up (collisions at the same bunch-crossing) and bremsstrahlung radiation emitted by electron, makes patterns of both eletrons indistinguishable for humans.
 
+Below are some example images of isolated electrons.
+
+![1](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele1.jpg) ![2](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/real_ele2.jpg)
+
+
