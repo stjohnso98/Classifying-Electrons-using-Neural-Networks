@@ -41,3 +41,7 @@ Below is the output histogram of a convolutional neural network after training a
 The CNN results was compared with the result of traditional physics observable, a parameter called "isolation", used by physicists to classify these electron. The ROC curve for both is shown below. The CNN outperformed the traditional physics observable for most signal efficiencies (Signal efficiency - True positive rate, Background rejection - True negative rate).
 
 ![roc](https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/Figure_2-12.png)
+
+## Instructions
+
+All the information used for creating the images, i.e., the spatial coordinates, pseudorapidity and azimuthal angle values, along with energy deposits at different values of these spatial coordinates, come from CERN open data portal. The simulations which are in AOD format are used to create TTrees. This is done using CMS software (CMSSW). Sample code for this conversion can be found in CMSSW repository. The TTree is then analyzed to select electrons of interest and to create images for each of them. The code for this can be found in FlatTree Analysis repository. Finally, these images becomes input to a convolutional neural network implemented using Tensorflow. The code for this is class_train_test.py. A simple neural network is implemented for the same purpose in the script ele_class_ann.py.
