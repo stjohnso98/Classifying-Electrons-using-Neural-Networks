@@ -32,7 +32,7 @@ Below are some examples images of non-isolated electrons.
 <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/fake_ele1.jpg" width="425"/> <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/fake_ele2.jpg" width="425"/>
 <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/fake_ele3.jpg" width="425"/> <img src="https://github.com/stjohnso98/Classifying-Electrons-using-Neural-Networks/blob/master/docs/fake_ele4.jpg" width="425"/>
 
-Note: The color in this image is only for the purpose of representation. Actual images used for training and testing of neural networks was grayscale images.
+Note: The color in this image is only for the purpose of representation. Actual images used for training and testing of neural networks were grayscale images.
 
 Below is the output histogram of a convolutional neural network after training and testing on 8000 electron images of both categories. (Signal is isolated electrons and background is non-isolated electrons.)
 
